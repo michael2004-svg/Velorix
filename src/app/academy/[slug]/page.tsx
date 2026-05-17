@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -23,7 +23,7 @@ import { COURSES } from "@/lib/courses-data";
 import { Course } from "@/lib/types";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 const mockModules = [
@@ -38,7 +38,8 @@ const mockModules = [
 ];
 
 export default function CourseDetailPage({ params }: PageProps) {
-  const course = COURSES.find((c) => c.slug === params.slug);
+  const { slug } = use(params);
+  const course = COURSES.find((c) => c.slug === slug);
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
 
